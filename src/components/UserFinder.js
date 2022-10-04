@@ -3,18 +3,23 @@ import { Component } from 'react';
 
 import Users from './Users';
 import classes from './UserFinder.module.css';
+import UsersContext from '../store/users-context';
 
-const DUMMY_USERS = [
-  { id: 'u1', name: 'Max' },
-  { id: 'u2', name: 'Manuel' },
-  { id: 'u3', name: 'Julie' },
-];
+// const DUMMY_USERS = [
+//   { id: 'u1', name: 'Max' },
+//   { id: 'u2', name: 'Manuel' },
+//   { id: 'u3', name: 'Julie' },
+// ];
 
 class UserFinder extends Component {
+    // using this concept you can use only one context
+    static contextType = UsersContext;
+
     constructor() {
         super();
         this.state = {
-            filteredUsers : DUMMY_USERS,
+            // filteredUsers : DUMMY_USERS,
+            filteredUsers : [],
             searchTerm : ""
         }
     }
@@ -22,7 +27,8 @@ class UserFinder extends Component {
     // here componentDidMount is optional and it run only first time.
     componentDidMount() {
         // set http request ...
-        this.setState({filteredUsers : DUMMY_USERS});
+        // this.setState({filteredUsers : DUMMY_USERS});
+        this.setState({filteredUsers :this.context.users});
     }
 
     searchChangeHandler = (event) => {
@@ -33,7 +39,8 @@ class UserFinder extends Component {
     componentDidUpdate(prevProps, prevState) {
         if (prevState.searchTerm !== this.state.searchTerm) { // use this condition for stoping infinite looping.
             this.setState({
-                filteredUsers : DUMMY_USERS.filter( user => user.name.includes(this.state.searchTerm)),
+                // filteredUsers : DUMMY_USERS.filter( user => user.name.includes(this.state.searchTerm)),
+                filteredUsers : this.context.users.filter( user => user.name.includes(this.state.searchTerm)),
             })
         }
     }
