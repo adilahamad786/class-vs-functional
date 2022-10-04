@@ -18,6 +18,14 @@ class Users extends Component {
     }
   }
 
+  // adding below code for explaning "Error Boundary".
+  componentDidUpdate() {
+    // Note : try, catch only work here but we are handler this error in UserFinder component by using "Error Boundary" class component.
+    if (this.props.users.length === 0) {
+      throw new Error("User not provided!");
+    }
+  }
+
   toggleUsersHandler = () => {
     // this.state.showUsers = false; // worng way!
     this.setState(preState => ({showUsers : !preState.showUsers}));
