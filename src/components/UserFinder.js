@@ -19,17 +19,24 @@ class UserFinder extends Component {
         }
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        if (prevState.searchTerm !== this.state.searchTerm) {
-            this.setState({
-                filteredUsers : DUMMY_USERS.filter( user => user.name.includes(this.state.searchTerm)),
-            })
-        }
+    // here componentDidMount is optional and it run only first time.
+    componentDidMount() {
+        // set http request ...
+        this.setState({filteredUsers : DUMMY_USERS});
     }
 
     searchChangeHandler = (event) => {
         this.setState({searchTerm : event.target.value});
     };
+
+    // componentDidUpdate run for every state change 
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.searchTerm !== this.state.searchTerm) { // use this condition for stoping infinite looping.
+            this.setState({
+                filteredUsers : DUMMY_USERS.filter( user => user.name.includes(this.state.searchTerm)),
+            })
+        }
+    }
 
     render() {
         return (
